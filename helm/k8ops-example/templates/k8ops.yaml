@@ -53,9 +53,9 @@ metadata:
   name: {{.Values.appName}}
   namespace: {{ .Values.namespace }}
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    ingress.kubernetes.io/force-ssl-redirect: "true"
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    #nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    #ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: public
   rules:
@@ -68,6 +68,7 @@ spec:
                 name: {{.Values.appName}}
                 port: 
                   number: {{ .Values.listeningPort }}
+                  
   # tls:
   #   - secretName: {{ .Values.domain }}-tls
   #     hosts: 

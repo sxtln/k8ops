@@ -10,7 +10,6 @@ env:
   CONTAINER_REGISTRY: ghcr.io
 jobs:
   start-k8s:
-    if: ${{1==2}}
     runs-on: ubuntu-latest
     outputs:
       cluster-id: ${{steps.create-cluster.outputs.cluster-id}}
@@ -23,9 +22,10 @@ jobs:
           api-key: ${{secrets.SXTLN_APIKEY}}
           node-count: 1
           node-type: b1
-          cluster-name: "${{github.ref_name}}_${{github.run_id}}"
+          cluster-name: "${{github.ref_name}}"
           
   build:
+    needs: [start-k8s]
     permissions:
       contents: read 
       packages: write
@@ -34,6 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: build and push container
+        id: build
         shell: bash
         run: |
           SHORT_HASH=$(git rev-parse --short HEAD)
@@ -42,3 +43,12 @@ jobs:
           docker build -t $IMAGE -f Dockerfile .
           docker login --username=${{github.actor}} --password=${{secrets.GITHUB_TOKEN}} ${{env.CONTAINER_REGISTRY}}
           docker push $IMAGE
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+      - name: deploy
+        env:
+          IMAGE: ${{steps.build.outputs.image}}
+        working-directory: 
+          helm
+        run: |
+          echo ${{needs.start-k8s.outputs.kube-config64}} | base64 -d > kube.config
+          helm upgrade -i --create-namespace --kubeconfig=kube.config k8ops k8ops-example
