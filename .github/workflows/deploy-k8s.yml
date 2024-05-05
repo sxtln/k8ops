@@ -38,4 +38,5 @@ jobs:
           IMAGE="${CONTAINER_REGISTRY}/${{github.repository}}:${SHORT_HASH}"
           echo building container: $IMAGE
           docker build -t $IMAGE -f Dockerfile .
+          docker login --username=${{github.actor}} --password=${{secrets.GITHUB_TOKEN}} ${{env.CONTAINER_REGISTRY}}
           docker push $IMAGE
