@@ -4,8 +4,13 @@ concurrency:
   cancel-in-progress: true
 on:
   workflow_dispatch: 
+permissions: 
+  contents: read
+env:
+  CONTAINER_REGISTRY: ghcr.io
 jobs:
   start-k8s:
+    if: ${{1==2}}
     runs-on: ubuntu-latest
     outputs:
       cluster-id: ${{steps.create-cluster.outputs.cluster-id}}
@@ -20,3 +25,17 @@ jobs:
           node-type: b1
           cluster-name: "${{github.ref_name}}_${{github.run_id}}"
           
+  build:
+    permissions: 
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build and push container
+        shell: bash
+        run: |
+          SHORT_HASH=$(git rev-parse --short HEAD)
+          IMAGE="${CONTAINER_REGISTRY}/${{github.repository}}:${SHORT_HASH}"
+          echo building container: $IMAGE
+          docker build -t $IMAGE -f Dockerfile .
+          docker push $IMAGE

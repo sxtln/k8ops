@@ -1,0 +1,5 @@
+namespace: k8ops-example
+domain: sextillion.io
+appName: k8ops
+image: "unknown"
+listeningPort: 3000

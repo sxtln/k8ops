@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.appName}}
+  namespace: {{.Values.namespace}}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{.Values.appName}}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.listeningPort }}
+      targetPort: {{ .Values.listeningPort }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{.Values.namespace}}
+  name: {{.Values.appName}}
+  labels:
+    app: {{.Values.appName}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.appName}}
+  template:
+    metadata:
+      namespace: {{.Values.namespace}}
+      labels:
+        app: {{.Values.appName}}
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.sextillionPullSecretName }}
+      containers:
+      - name: {{.Values.appName}}
+        image:  {{.Values.image}}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "1.0"
+            memory: "128Mi"
+          limits:
+            cpu: "1.5"
+            memory: "1024Mi"
+        ports:
+        - containerPort: {{ .Values.listeningPort }}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{.Values.appName}}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: public
+  rules:
+    - host: '{{.Values.domain}}'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{.Values.appName}}
+                port: 
+                  number: {{ .Values.listeningPort }}
+  # tls:
+  #   - secretName: {{ .Values.domain }}-tls
+  #     hosts: 
+  #     - {{ .Values.domain }}  
+      
