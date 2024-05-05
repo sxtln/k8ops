@@ -51,4 +51,8 @@ jobs:
           helm
         run: |
           echo ${{needs.start-k8s.outputs.kube-config64}} | base64 -d > kube.config
+          kubectl --kubeconfig=kube.config get ns/k8ops-example
+          if [ "$?" != "0" ]; then
+            kubectl --kubeconfig=kube.config create ns k8ops-example
+          fi
           helm upgrade -i --create-namespace --kubeconfig=kube.config k8ops k8ops-example
