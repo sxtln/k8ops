@@ -1,5 +1,5 @@
 namespace: k8ops-example
-domain: sextillion.io
+domain: '162.55.219.83'
 appName: k8ops
 image: 'ghcr.io/sxtln/k8ops-example:16bb9c3'
 listeningPort: 3000

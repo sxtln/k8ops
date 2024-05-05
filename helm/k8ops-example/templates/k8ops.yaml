@@ -59,8 +59,7 @@ metadata:
 spec:
   ingressClassName: public
   rules:
-    - host: '{{.Values.domain}}'
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
