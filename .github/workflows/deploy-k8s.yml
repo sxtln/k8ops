@@ -1,0 +1,22 @@
+name: Deploy to k8s
+concurrency: 
+  group: ${{github.ref_name}}
+  cancel-in-progress: true
+on:
+  workflow_dispatch: 
+jobs:
+  start-k8s:
+    runs-on: ubuntu-latest
+    outputs:
+      cluster-id: ${{steps.create-cluster.outputs.cluster-id}}
+      kube-config64: ${{steps.create-cluster.outputs.kube-config64}}
+      cluster-ip: ${{steps.create-cluster.outputs.cluster-ip}}
+    steps:
+      - uses: sxtln/create-cluster@v0.1
+        id: create-cluster
+        with:
+          api-key: ${{secrets.SXTLN_APIKEY}}
+          node-count: 1
+          node-type: b1
+          cluster-name: "${{github.ref_name}}_${{github.run_id}}"
+          
