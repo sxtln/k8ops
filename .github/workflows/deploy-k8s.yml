@@ -57,4 +57,4 @@ jobs:
             kubectl --kubeconfig=kube.config create ns k8ops-example
           fi
           set -e
-          helm upgrade -i --create-namespace --kubeconfig=kube.config k8ops k8ops-example
+          helm upgrade -i --set "image=${IMAGE}" --kubeconfig=kube.config k8ops k8ops-example
