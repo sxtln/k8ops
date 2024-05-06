@@ -1,13 +1,13 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Next.js Starter Blog',
-  author: 'Tails Azimuth',
-  headerTitle: 'TailwindBlog',
-  description: 'A blog created with Next.js and Tailwind.css',
+  title: 'Sextillion k8ops example',
+  author: 'Sagi FN',
+  headerTitle: 'SagiFNBlog',
+  description: 'example app as blog',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
+  siteUrl: 'https://www.sextillion.io',
+  siteRepo: 'https://github.com/sxtln/k8ops-example',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/twitter-card.png',
   mastodon: 'https://mastodon.social/@mastodonuser',
@@ -32,16 +32,7 @@ const siteMetadata = {
       // src: 'https://us.umami.is/script.js'
       // Remember to add 'us.umami.is' in `next.config.js` as a permitted domain for the CSP
     },
-    // plausibleAnalytics: {
-    //   plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
-    // },
-    // simpleAnalytics: {},
-    // posthogAnalytics: {
-    //   posthogProjectApiKey: '', // e.g. 123e4567-e89b-12d3-a456-426614174000
-    // },
-    // googleAnalytics: {
-    //   googleAnalyticsId: '', // e.g. G-XXXXXXX
-    // },
+    
   },
   newsletter: {
     // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus
