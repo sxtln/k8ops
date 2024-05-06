@@ -38,10 +38,10 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            cpu: "1.0"
+            cpu: "0.2"
             memory: "128Mi"
           limits:
-            cpu: "1.5"
+            cpu: "1.0"
             memory: "1024Mi"
         ports:
         - containerPort: {{ .Values.listeningPort }}
