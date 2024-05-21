@@ -22,7 +22,7 @@ jobs:
           api-key: ${{secrets.SXTLN_APIKEY}}
           node-count: 1
           node-type: b1
-          cluster-name: "${{github.ref_name}}"
+          cluster-name: "task1"
           
   build:
     needs: [start-k8s]
